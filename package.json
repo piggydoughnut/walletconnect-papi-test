@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@polkadot-api/descriptors": "file:.papi/descriptors",
+    "@polkadot-api/descriptors": "portal:.papi/descriptors",
     "@polkadot-labs/hdkd-helpers": "^0.0.13",
     "@polkadot/api": "^15.8.1",
     "@polkadot/keyring": "^13.4.3",
