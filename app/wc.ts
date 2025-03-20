@@ -1,23 +1,21 @@
-import {
-  getPolkadotSignerFromPjs,
-  SignerPayloadJSON,
-} from "polkadot-api/pjs-signer";
+import { getPolkadotSignerFromPjs } from "polkadot-api/pjs-signer";
 
 import { config } from "./config";
+import { ISignClient, SessionTypes } from "@walletconnect/types";
 
-let requestId = 1;
-
-export function generateSigner(account: string, session, client) {
+export function generateSigner(
+  account: string,
+  session: SessionTypes.Struct,
+  client: ISignClient,
+) {
   return getPolkadotSignerFromPjs(
     account,
-    async (payload: SignerPayloadJSON): Promise<any> => {
+    async (payload) => {
       console.log("signPayload: Signing Payload:", payload);
       const request = {
         topic: session.topic,
         chainId: config.wndChainId,
         request: {
-          id: 1,
-          jsonrpc: "2.0",
           method: "polkadot_signTransaction",
           params: {
             address: payload.address,
@@ -28,13 +26,13 @@ export function generateSigner(account: string, session, client) {
 
       try {
         console.log("signPayload: About to sign request ", request);
-        const response = await client.request<Signature>(request);
+        const response = await client.request(request);
         console.log("signPayload: Signed the request ", response);
-        return { id: ++requestId, signature: response?.signature };
+        return response as any;
       } catch (error) {
         console.error(
           "signPayload: Error during WalletConnect signing:",
-          error
+          error,
         );
         console.log(error);
         throw error;
@@ -50,9 +48,7 @@ export function generateSigner(account: string, session, client) {
         },
       };
 
-      const { signature } = await client.request<Signature>(request);
-
-      return { id: ++requestId, signature };
-    }
+      return client.request(request);
+    },
   );
 }
