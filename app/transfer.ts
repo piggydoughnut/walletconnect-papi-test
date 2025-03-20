@@ -40,7 +40,10 @@ export const prepareTransfer = async (value: bigint, signer: any) => {
   //       client.destroy();
   //     },
   //   });
-  const nonce = await api.apis.AccountNonceApi.account_nonce(config.addressTo);
+
+  const nonce = await api.apis.AccountNonceApi.account_nonce(config.addressTo, {
+    at: "best",
+  });
 
   console.log("NEW NONCE ", nonce.toString());
 
