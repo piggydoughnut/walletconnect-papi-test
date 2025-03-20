@@ -29,7 +29,6 @@ export function generateSigner(account: string, session, client) {
             address: payload.address,
             transactionPayload: {
               ...payload,
-              nonce: "0007876876",
               signedExtensions: [
                 "CheckNonZeroSender",
                 "CheckSpecVersion",
