@@ -41,11 +41,5 @@ export const prepareTransfer = async (value: bigint, signer: any) => {
   //     },
   //   });
 
-  const nonce = await api.apis.AccountNonceApi.account_nonce(config.addressTo, {
-    at: "best",
-  });
-
-  console.log("NEW NONCE ", nonce.toString());
-
-  return transfer.signAndSubmit(signer, { nonce });
+  return transfer.signAndSubmit(signer);
 };
