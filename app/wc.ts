@@ -11,13 +11,7 @@ export function generateSigner(account: string, session, client) {
   return getPolkadotSignerFromPjs(
     account,
     async (payload: SignerPayloadJSON): Promise<any> => {
-      // Log the full payload to inspect its contents
-      // console.log("signPayload: Signing Payload:", payload);
-
-      // Log address separately
-      // console.log("signPayload: Address from Payload:", payload.address);
-
-      console.log("TRANSACTION PAYLOAD ", payload);
+      console.log("signPayload: Signing Payload:", payload);
       const request = {
         topic: session.topic,
         chainId: config.wndChainId,
@@ -27,21 +21,7 @@ export function generateSigner(account: string, session, client) {
           method: "polkadot_signTransaction",
           params: {
             address: payload.address,
-            transactionPayload: {
-              ...payload,
-              signedExtensions: [
-                "CheckNonZeroSender",
-                "CheckSpecVersion",
-                "CheckTxVersion",
-                "CheckGenesis",
-                "CheckMortality",
-                "CheckNonce",
-                "CheckWeight",
-                "ChargeTransactionPayment",
-                "CheckMetadataHash",
-                "WeightReclaim",
-              ],
-            },
+            transactionPayload: payload,
           },
         },
       };
