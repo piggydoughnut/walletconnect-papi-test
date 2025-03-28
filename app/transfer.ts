@@ -19,9 +19,7 @@ const westend = [
 ];
 
 export const prepareTransfer = async (value: bigint, signer: any) => {
-  // create the client with smoldot
   const client = createClient(withPolkadotSdkCompat(getWsProvider(westend)));
-  // get the safely typed API
   const api: TypedApi<typeof wnd> = client.getTypedApi(chains.WESTEND);
 
   const transfer = api.tx.Balances.transfer_keep_alive({
@@ -30,16 +28,5 @@ export const prepareTransfer = async (value: bigint, signer: any) => {
   });
 
   console.log("Making a transfer to ", config.addressTo, " value: ", value);
-
-  // sign and submit the transaction while looking at the
-  // different events that will be emitted
-  //   return transfer.signSubmitAndWatch(signer).subscribe({
-  //     next: (event) => console.log("Tx event: ", event.type),
-  //     error: (e) => console.error("Tx event: error ", e),
-  //     complete() {
-  //       client.destroy();
-  //     },
-  //   });
-
   return transfer.signAndSubmit(signer);
 };
